@@ -42,7 +42,7 @@
 						<div class="recommend-item">
 							<img :src="item.image" width="80%">
 							<div>{{item.goodsName}}</div>
-							<div>￥{{item.price}}(￥{{item.mallPrice}})</div>
+							<div>￥{{item.price|moneyFilter}}(￥{{item.mallPrice}})</div>
 						</div>
 					</swiper-slide>
 				</swiper>
@@ -51,14 +51,29 @@
 	<!-- 轮播插件 -->
 		<swiperDefault></swiperDefault>
 	<!-- 楼层 -->
-		<div class="floor">		
+		<!-- <div class="floor">		
+			<div class="floor-title"><span>1F</span>新鲜水果</div>
 			<div class="floor-anomaly">
-				<div class="floor-title"><span>1F</span>新鲜水果</div>	
-				<div class="floor-common">
-					<div class="floor-one" v-for="product in floor1">
-						<img :src="product.image" width="100%">
-					</div>
+				<div class="floor-one" v-for="product in floor1">
+					<img :src="product.image" width="100%">
 				</div>
+			</div>
+		</div> -->
+		<floorComponent :floorData="floor1" :floorTitle="floorName.floor1" :floorNum="1"></floorComponent>
+		<floorComponent :floorData="floor2" :floorTitle="floorName.floor2" :floorNum="2"></floorComponent>
+		<floorComponent :floorData="floor3" :floorTitle="floorName.floor3" :floorNum="3"></floorComponent>
+	<!-- 热卖商品 -->
+		<div class="hot-area">
+			<div class="hot-title">热卖商品</div>
+			<div class="hot-goods">
+				<van-list>
+					<!-- gutter设置左右padding为10 -->
+					<van-row gutter="20">
+						<van-col span="12" v-for="(item,index) in hotGoods" :key="index">
+							<goodsInfo :goodsImage="item.image" :goodsName="item.name" :goodsPrice="item.price"></goodsInfo>
+						</van-col>
+					</van-row>
+				</van-list>
 			</div>
 		</div>
 	</div>
@@ -70,10 +85,18 @@
 
 	// 引入轮播组件
 	import swiperDefault from '../swiper/swiperDefault'
+	//引入页面子组件
+	import floorComponent from '../component/floorComponent'
+	import goodsInfo from '../component/goodsInfoComponent'
+	//引入过滤器
+	import {toMoney} from '@/filter/moneyFilter.js'
+	//引入接口文件
+	import url from '@/serviceAPI.config.js'
+
 	export default{
 		created(){
 			axios({
-				url:'https://www.easy-mock.com/mock/5b690a9487dadc0640e32b96/shop/index',
+				url:url.getShoppingMallInfo,
 				method:'get',
 			}).then(response =>{
 				// console.log(response)
@@ -82,13 +105,22 @@
 					this.adBanner = response.data.data.advertesPicture;
 					this.recommendGoods = response.data.data.recommend;
 					this.floor1 = response.data.data.floor1;
+					this.floor2 = response.data.data.floor2;
+					this.floor3 = response.data.data.floor3;
+					this.floorName = response.data.data.floorName;
+					this.hotGoods = response.data.data.hotGoods;
 				}
 			}).catch((error)=>{
 
 			})
 		},
 		components:{
-			swiper,swiperSlide,swiperDefault
+			swiper,swiperSlide,swiperDefault,floorComponent,goodsInfo
+		},
+		filters:{
+			moneyFilter(money){
+				return toMoney(money)
+			}
 		},
 		data(){
 			return {
@@ -109,12 +141,15 @@
 				floor1:[],
 				floor2:[],
 				floor3:[],
+				floorName:'',
+				hotGoods:[],
 			}
 		},
 		
 	}
 </script>
 <style>
+/*搜索栏-开始*/
 .search-bar{
     height: 2.2rem;
     background-color: #e5017d;
@@ -131,6 +166,8 @@
 .location-icon{
     padding-top: .2rem;
     padding-left: .3rem;}
+/*搜索栏-结束*/
+/*轮播图-开始*/
 .swiper-area{
 	overflow: hidden;
 	clear: both;}
@@ -142,29 +179,28 @@
 	border-radius: .3rem;
 	font-size: 14px;}
 .type-bar div{flex:1;}
+/*轮播图-结束*/
+/* 推荐板块-开始*/
 .recommend-area{
 	background-color: #fff;
-	margin-top: .3rem;}
+	margin-top: .3rem;} 
 .recommend-title{
 	font-size: 14px;
 	color: #e5017d;
 	border-bottom: 1px solid #eee;
 	padding:.2rem;}
-.recommend-body{
-	border-bottom: 1px solid #eee;}
+.recommend-body{border-bottom: 1px solid #eee;}
 .recommend-item{
 	width: 99%;
 	border-right: 1px solid #eee;
 	font-size: 12px;
 	text-align: center;}
-.floor-common{
-	display: flex;
-	flex-direction:  row;
-	background-color: #fff;
-	border-bottom: 1px solid #ddd;}
+/*推荐板块-结束*/
+/*楼层板块-开始*/
 .floor-title{
 	color: #e5017d;
-	font-size: 14px;}
+	font-size: 14px;
+	margin: .4rem;}
 .floor-title span{
 	background-color: #e5017d;
 	color: #fff;
@@ -172,9 +208,26 @@
 	height:.5rem;
 	padding: .2rem;
 	margin-right: .3rem;
-	border-radius: .6rem;}
+	border-radius: .7rem;}
 .floor-anomaly{
+	
+	display: flex;
+	flex-direction:  row;
+	flex-wrap: wrap;
+	background-color: #fff;
+	border-bottom: 1px solid #ddd;}
+.floor-anomaly div{
 	width:10rem;
-	/*flex:1;*/
-	}
+	box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.floor-one{border-right:1px solid #ddd;}
+/*楼层板块-结束*/
+/*商品热卖-开始*/
+.hot-area{
+	text-align: center;
+	font-size: 14px;
+	height: 1.8rem;
+	line-height: 1.8rem;}
+/*商品热卖-结束*/
 </style>
