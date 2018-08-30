@@ -24,7 +24,7 @@
 		</div>
 	<!-- 菜单栏 -->
 		<div class="type-bar">
-			<div v-for="(cate,index) in category" :key="index">
+			<div @click="clickCategory(cate.mallCategoryId)" v-for="(cate,index) in category" :key="index">
 				<img v-lazy="cate.image" width="90%">
 				<span>{{cate.mallCategoryName}}</span>
 			</div>
@@ -41,7 +41,7 @@
 			<div class="recommend-body">
 				<swiper :options="swiperOption">
 					<swiper-slide v-for="(item,index) in recommendGoods" :key="index">
-						<div class="recommend-item">
+						<div @click="getGoodsInfo(item.goodsId)" class="recommend-item">
 							<img :src="item.image" width="80%">
 							<div>{{item.goodsName}}</div>
 							<div>￥{{item.price|moneyFilter}}(￥{{item.mallPrice}})</div>
@@ -110,6 +110,14 @@
 
 			})
 		},
+		methods:{
+			getGoodsInfo(goodsId){
+				this.$router.push({path:'../goods',query:{goodsId:goodsId}})
+			},
+			clickCategory(id){
+				this.$router.push({path:'../categoryList',query:{categoryId:id}})
+			}
+		},
 		components:{
 			swiper,swiperSlide,swiperDefault,floorComponent,goodsInfo
 		},
@@ -141,7 +149,6 @@
 				hotGoods:[],
 			}
 		},
-		
 	}
 </script>
 <style>
