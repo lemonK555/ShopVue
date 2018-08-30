@@ -1,5 +1,5 @@
 <template>
-	<div class="goods-info">
+	<div class="goods-info" @click="goGoodsPage()">
 		<div class="goods-image">
 			<img v-lazy="goodsImage" width="100%">
 		</div>
@@ -10,18 +10,29 @@
 <script>
 	import {toMoney} from '@/filter/moneyFilter.js'
 	export default{
-		props:['goodsImage','goodsName','goodsPrice'],
+		props:['goodsImage','goodsName','goodsPrice','goodsId'],
 		filters:{
 			moneyFilter(money){
 				return toMoney(money)
 			}
 		},
+		methods:{
+			goGoodsPage(){
+				this.$router.push({path:'../goods',query:{goodsId:this.goodsId}})
+			}
+		}
 	}
 </script>
 <style scoped>
-	.goods-name{
-		padding:0 8px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;}
+.goods-info{
+	border-bottom: 1px solid #ddd;	
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;}
+.goods-name{
+	padding:0 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;}
 </style>
