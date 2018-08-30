@@ -235,7 +235,43 @@ npm install mongoose --save
 ## 注册页面的编写
 * 1、在路由中注册*
 * 2、在main.js中引入Field和NavBar插件*
-**
 
+# 四、前后端的通讯
+## 1. 使用Koa2将路由模块化---将service/index.js中的路由拆分开来
+* (1)在service下安装koa-router*
+```
+	npm install koa-router --save
+```
+* (2)在service下新建appApi/User.js 编写子路由内容*
+* (3)在index.js中进行相关配置，使其访问到子路由*
 
+## 2.打通前后端的通讯
+* (1)安装koa-bodyparser---用于接收前端发送的请求*
+```
+	npm install --save koa-bodyparser
+```
+* (2)安装好后在service/index.js中注册和使用中间件*
+```
+	const bodyParser = require('koa-bodyparser')
+	app.use(bodyParser())
+```
+* (3)前端引入axios用于发送请求*
+* (4)修改serviceAPI.config.js的配置文件，加入接口地址*
+* (5)在register.vue页面引用接口配置文件↑*
+* (6)安装koa2-cors中间件，并引用注册，同上。其作用是自动配置请求头文件*
+* (7)在service/appApi/user.js中编写接收前台数据的方法*
 
+	前台数据可用---ctx.request.body获取到
+* (8)对数据库的操作*
+>在service/appApi/user.js中引入mongoose，用于操作Schema
+
+>在service下新建fsJson.js用于文件读取以及提纯
+
+	 注：
+	 	1、vant中的PullRefresh实现下拉刷新。
+	 	2、params传参，路径只能使用name;query传参时路径使用path。
+		 	this.$router.push({name:'Goods',params:{goodsId:id}})
+		 	this.$router.push({path:'goods',query:{goodsId:this.goodsId}})
+	 	取参：
+	 		this.$route.params.goodsId
+	 		this.$route.query.goodsId
