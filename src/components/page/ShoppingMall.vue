@@ -35,7 +35,9 @@
 		</div>
 	<!-- 商品推荐 -->
 		<div class="recommend-area">
-			<div class="recommend-title">商品推荐</div>
+			<div class="recommend-title">
+				<span class="triangle"></span>商品推荐
+			</div>
 			<div class="recommend-body">
 				<swiper :options="swiperOption">
 					<swiper-slide v-for="(item,index) in recommendGoods" :key="index">
@@ -49,28 +51,22 @@
 			</div>
 		</div>
 	<!-- 轮播插件 -->
-		<swiperDefault></swiperDefault>
+		<!-- <swiperDefault></swiperDefault> -->
 	<!-- 楼层 -->
-		<!-- <div class="floor">		
-			<div class="floor-title"><span>1F</span>新鲜水果</div>
-			<div class="floor-anomaly">
-				<div class="floor-one" v-for="product in floor1">
-					<img :src="product.image" width="100%">
-				</div>
-			</div>
-		</div> -->
 		<floorComponent :floorData="floor1" :floorTitle="floorName.floor1" :floorNum="1"></floorComponent>
 		<floorComponent :floorData="floor2" :floorTitle="floorName.floor2" :floorNum="2"></floorComponent>
 		<floorComponent :floorData="floor3" :floorTitle="floorName.floor3" :floorNum="3"></floorComponent>
 	<!-- 热卖商品 -->
 		<div class="hot-area">
-			<div class="hot-title">热卖商品</div>
+			<div class="hot-title">
+				<span class="triangle"></span>热卖商品
+			</div>
 			<div class="hot-goods">
 				<van-list>
-					<!-- gutter设置左右padding为10 -->
-					<van-row gutter="20">
-						<van-col span="12" v-for="(item,index) in hotGoods" :key="index">
-							<goodsInfo :goodsImage="item.image" :goodsName="item.name" :goodsPrice="item.price"></goodsInfo>
+					<!-- gutter设置左右padding为10`<van-row gutter="20">-->
+					<van-row >
+						<van-col class="hotStyle" span="12" v-for="(item,index) in hotGoods" :key="index">
+							<goodsInfo :goodsId="item.goodsId" :goodsImage="item.image" :goodsName="item.name" :goodsPrice="item.price"></goodsInfo>
 						</van-col>
 					</van-row>
 				</van-list>
@@ -149,6 +145,15 @@
 	}
 </script>
 <style>
+/*三角形*/
+.triangle{
+	width:0;
+	height:0;
+	border-left: .5rem solid transparent;
+	border-right: .5rem solid transparent;
+	border-top: .5rem solid #e5017d;
+	display: inline-block;
+	margin-right: 3px;}
 /*搜索栏-开始*/
 .search-bar{
     height: 2.2rem;
@@ -209,19 +214,6 @@
 	padding: .2rem;
 	margin-right: .3rem;
 	border-radius: .7rem;}
-.floor-anomaly{
-	
-	display: flex;
-	flex-direction:  row;
-	flex-wrap: wrap;
-	background-color: #fff;
-	border-bottom: 1px solid #ddd;}
-.floor-anomaly div{
-	width:10rem;
-	box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-}
-.floor-one{border-right:1px solid #ddd;}
 /*楼层板块-结束*/
 /*商品热卖-开始*/
 .hot-area{
@@ -229,5 +221,12 @@
 	font-size: 14px;
 	height: 1.8rem;
 	line-height: 1.8rem;}
+.hot-title{
+	color:#e5017d;
+	padding: 5px;}
+.hot-goods .hotStyle:nth-child(odd){
+	border-right: 1px solid #ddd;}
+.hot-goods .hotStyle:nth-child(even){
+	border-right: 1px solid transparent;}
 /*商品热卖-结束*/
 </style>
