@@ -12,15 +12,17 @@
 				icon="clear"
 				placeholder="请输入用户名"
 				required
-				@click-icon="username = ''"/>
+				@click-icon="username = ''"
+				:error-message="usernameErrorMsg"/>
 			<van-field 
 				v-model="password"
 				type="password"
 				label="密码"
 				placeholder="请输入用户名"
-				required/>
+				required
+				:error-message="passwordErrorMsg"/>
 			<div class="register-button">
-				<van-button type="primary" @click="axiosRegisterUser" size="large">马上注册</van-button>
+				<van-button type="primary" @click="registerAction" :loading="openLoading" size="large">马上注册</van-button>
 			</div>
 		</div>
 	</div>
@@ -36,34 +38,63 @@
 			return{
 				username:'',
 				password:'',
+				openLoading: false,//避免重复提交
+				usernameErrorMsg:'',//当用户名出现错误时
+				passwordErrorMsg:'',//当密码出现错误时
 			}
+		},
+		components:{
+			Toast
 		},
 		methods:{
 			goBack(){
 				this.$router.go(-1)
 			},
+			registerAction(){
+				this.checkForm()&&this.axiosRegisterUser()
+			},
 			axiosRegisterUser(){
+				this.openLoading = true
 				axios({
 					url:url.registerUser,
-					method:'post',
+					method:'POST',
 					data:{
 						username:this.username,
 						password:this.password,
-					}
+					},
 				}).then(response =>{
 					console.log(response)
 					//如果返回code为200，代表注册成功，我们给用户作Toast提示
 			        if(response.data.code == 200){
 			            Toast.success('注册成功')
+			            this.$router.push('/')
 			        }else{
-			            console.log(response.data.message)
+			            console.log(response.data.message+"注册h失败")
 			            Toast.fail('注册失败')
+			            this.openLoading = false
 			        }
             			console.log(response.data.code)
 				}).catch((error) =>{
-					console.log(error+"抛出异常")
+					console.log(error+"抛出异常a")
+					this.openLoading = false
 				})
-			}
+			},
+			checkForm(){
+				let isOk = true
+				if(this.username.length<5){
+					this.usernameErrorMsg = "用户名不能小于5位"
+					isOk = false
+				}else{
+					this.usernameErrorMsg = ''
+				}
+				if(this.password.length<6){
+					this.passwordErrorMsg = "密码不能少于6位"
+					isOk = false
+				}else{
+					this.passwordErrorMsg = ''
+				}
+				return isOk
+			},
 		},
 	}
 </script>
