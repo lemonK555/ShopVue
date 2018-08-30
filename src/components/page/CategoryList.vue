@@ -67,9 +67,11 @@
 				goodList:[],//商品信息
 				categorySubId:'',//商品子分类ID
 				errorImg:'this.src="'+require('@/assets/images/errorImg.jpg')+'"',//错误图片显示路径
+				CID:'',
 			}
 		},
 		created(){
+			this.CID = this.$route.query.categoryId ? this.$route.query.categoryId:this.$route.params.categoryId
 			this.getCategory();
 		},
 		filters:{
@@ -86,7 +88,14 @@
 					console.log(response)
 					if(response.data.code == 200&&response.data.message){
 						this.category = response.data.message
-						this.getCategorySubByCategoryId(this.category[0].ID)
+
+						if(this.CID){
+							this.categoryIndex = this.CID-1
+							this.getCategorySubByCategoryId(this.CID)
+						}else{
+							this.getCategorySubByCategoryId(this.category[0].ID)
+						}
+						
 					}else{
 						Toast('服务器错误，数据取得失败')
 					}
