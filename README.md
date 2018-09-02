@@ -1,7 +1,8 @@
 # shopVue
 
 > 移动电商
-
+![购物车]
+(https://raw.githubusercontent.com/lemonK555/ShopVue/master/src/assets/Cart.png)
 # 一、第一步的相关配置
 ## 1、利用vue-cli构建了项目
 ```
