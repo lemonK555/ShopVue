@@ -15,11 +15,8 @@
     export default {
         data() {
             return {
-                active: 0
+                active: 0,
             }
-        },
-        created(){
-            this.changeTabBarActive()
         },
         methods: {
             changeTabbar(active) {
@@ -38,12 +35,16 @@
                         break;
                 }
             },
-            changeTabBarActive(){
-                this.nowPath=this.$route.path
-                if(this.nowPath=='/Cart'){
+        },
+        watch:{
+            $route:function(){
+                this.nowPath = this.$route.path
+                if(this.nowPath == '/categoryList'){
+                    this.active = 1;
+                }else if(this.nowPath=='/cart'){
                     this.active=2;
                 }
-            },
+            }
         },
     }
 </script>
