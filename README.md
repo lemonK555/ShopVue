@@ -1,8 +1,22 @@
 # shopVue
 
 > 移动电商
-![购物车]
-(https://raw.githubusercontent.com/lemonK555/ShopVue/master/src/assets/Cart.png)
+
+**![首页]
+(https://raw.githubusercontent.com/lemonK555/ShopVue/master/src/assets/ShoppingMall.png)**
+
+**![商品类别]
+(https://raw.githubusercontent.com/lemonK555/ShopVue/master/src/assets/CategoryList.png)**
+
+**![购物车]
+(https://raw.githubusercontent.com/lemonK555/ShopVue/master/src/assets/Cart.png)**
+
+**![商品详情]
+(https://raw.githubusercontent.com/lemonK555/ShopVue/master/src/assets/Goods.png)**
+
+**![注册]
+(https://raw.githubusercontent.com/lemonK555/ShopVue/master/src/assets/Register.png)**
+
 # 一、第一步的相关配置
 ## 1、利用vue-cli构建了项目
 ```
